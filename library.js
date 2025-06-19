@@ -29,7 +29,17 @@ function displayBooks() {
     for (const book of myLibrary) {
         const bookDiv = document.createElement("div")
         bookDiv.setAttribute("class", "card")
-        bookDiv.textContent = book.title + book.author + book.pages  
+
+        const list = document.createElement("ul");
+        list.setAttribute("class", "book-info") 
+
+        for (const key in book) {
+            const item = document.createElement("li");
+            item.textContent = `${key}: ${book[key]}`;
+            list.appendChild(item);
+        }
+
+        bookDiv.append(list); 
         container.append(bookDiv);
     }
 }
