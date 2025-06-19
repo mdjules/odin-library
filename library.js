@@ -1,3 +1,4 @@
+
 //array to add books library to
 const myLibrary = [];
 
@@ -20,3 +21,17 @@ function addBookToLibrary(title, author, pages) {
 addBookToLibrary("test", "author", "22");
 addBookToLibrary("test2", "author2", "222")
 console.log(myLibrary)
+
+const container = document.querySelector(".container");
+
+function displayBooks() {
+
+    for (const book of myLibrary) {
+        const bookDiv = document.createElement("div")
+        bookDiv.setAttribute("class", "card")
+        bookDiv.textContent = book.title + book.author + book.pages  
+        container.append(bookDiv);
+    }
+}
+
+displayBooks();
