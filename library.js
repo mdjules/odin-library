@@ -9,6 +9,7 @@ function Book(title, author, pages) {
     this.author = author;
     this.pages = pages;
     this.read = false;
+    
 
 };
 
@@ -30,6 +31,11 @@ function displayBooks() {
     for (const book of myLibrary) {
         const bookDiv = document.createElement("div")
         bookDiv.setAttribute("class", "card")
+        bookDiv.setAttribute("data-book-id", book.id)
+        
+        const removeButton = document.createElement("button");
+        removeButton.classList.add("removeButton")
+        removeButton.textContent = "Remove Book"
 
         const list = document.createElement("ul");
         list.setAttribute("class", "book-info") 
@@ -41,11 +47,27 @@ function displayBooks() {
         }
 
         bookDiv.append(list); 
+        bookDiv.append(removeButton)
         container.append(bookDiv);
     }
-}
+};
 
 displayBooks();
+
+//add an event delegation event listener on the parent container so that whenever a removeButton is clicked it removes the entire parent div (book)
+container.addEventListener("click", function(event) {
+    if(event.target.className === "removeButton") {
+        //search for the data attribute (bookId) of the div that the removeButton was in
+        const indexFinder = event.target.parentElement.dataset.bookId
+        //covert that bookId into an index in the array by searching for its value in the object properties
+        const index = myLibrary.findIndex(book => book.id == indexFinder);
+        //remove from array based on returned index value above
+        myLibrary.splice(index, 1)
+        //remove from DOM
+        event.target.parentElement.remove();
+    }
+
+});
 
 const newBookButton = document.querySelector(".newBookButton");
 
