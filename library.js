@@ -45,3 +45,56 @@ function displayBooks() {
 }
 
 displayBooks();
+
+const newBookButton = document.querySelector(".newBookButton");
+
+function createForm() {
+
+    const newBookForm = document.createElement("form")
+    newBookForm.setAttribute("method", "post");
+
+
+    const formElements = [
+        {
+            labelText: "Book Title:",
+            inputType: "text",
+            inputId: "titleName"
+        },
+        {
+            labelText: "Author Name:",
+            inputType: "text",
+            inputId: "authorName"
+        },
+        {
+            labelText: "Number of Pages:",
+            inputType: "text",
+            inputId: "numberPages"
+        }
+    ];
+
+    formElements.forEach(element => {
+        const label = document.createElement("label");
+        label.setAttribute("for", element.inputId)
+        label.textContent = element.labelText;
+
+        const input = document.createElement("input");
+        input.setAttribute("type", element.inputType);
+        input.setAttribute("id", element.inputId);
+
+        newBookForm.appendChild(label);
+        newBookForm.appendChild(input);
+    });
+
+    return newBookForm;
+}
+
+newBookButton.addEventListener("click", function() {
+    const dialogBox = document.createElement("dialog")
+    dialogBox.classList.add("dialogBox")
+
+    const dialogForm = createForm();
+
+    container.append(dialogBox)
+    dialogBox.appendChild(dialogForm)
+    dialogBox.showModal()
+})
