@@ -8,10 +8,14 @@ function Book(title, author, pages) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = false;
+    //this.read = false;
     
 
 };
+
+
+//this is showing as text because of your for in function in displayBooks you big dummy
+Book.prototype.readStatus = false;
 
 //function to add new book object to array
 function addBookToLibrary(title, author, pages) {
@@ -37,6 +41,10 @@ function displayBooks() {
         removeButton.classList.add("removeButton")
         removeButton.textContent = "Remove Book"
 
+        const readStatusButton = document.createElement("button")
+        readStatusButton.classList.add("readStatusButton")
+        readStatusButton.textContent = "Change Read Status"
+
         const list = document.createElement("ul");
         list.setAttribute("class", "book-info") 
 
@@ -48,6 +56,7 @@ function displayBooks() {
 
         bookDiv.append(list); 
         bookDiv.append(removeButton)
+        bookDiv.append(readStatusButton)
         container.append(bookDiv);
     }
 };
@@ -59,15 +68,40 @@ container.addEventListener("click", function(event) {
     if(event.target.className === "removeButton") {
         //search for the data attribute (bookId) of the div that the removeButton was in
         const indexFinder = event.target.parentElement.dataset.bookId
+
         //covert that bookId into an index in the array by searching for its value in the object properties
         const index = myLibrary.findIndex(book => book.id == indexFinder);
+
         //remove from array based on returned index value above
         myLibrary.splice(index, 1)
+
         //remove from DOM
         event.target.parentElement.remove();
     }
 
 });
+
+//Updates readStatus when the button is clicked for each book and updates DOM accordingly
+
+container.addEventListener("click", function(event) {
+    if(event.target.className === "readStatusButton") {
+         //gets finds bookId for the book that contains readStatus button
+        const indexFinder = event.target.parentElement.dataset.bookId
+
+        //gets index of that book in object array (myLibrary)
+        const index = myLibrary.findIndex(book => book.id == indexFinder);
+        
+        //if the readStatus is false, change it to true and vice versa
+        if(myLibrary[index].readStatus === false){
+            myLibrary[index].readStatus = true
+        } else {
+            myLibrary[index].readStatus = false
+        }
+    }
+    //reset DOM to show changed readStatus
+    container.innerHTML = ""
+    displayBooks();
+})
 
 const newBookButton = document.querySelector(".newBookButton");
 
