@@ -8,14 +8,10 @@ function Book(title, author, pages) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    //this.read = false;
+    this.read = false;
     
 
 };
-
-
-//this is showing as text because of your for in function in displayBooks you big dummy
-Book.prototype.readStatus = false;
 
 //function to add new book object to array
 function addBookToLibrary(title, author, pages) {
@@ -81,7 +77,7 @@ container.addEventListener("click", function(event) {
 
 });
 
-//Updates readStatus when the button is clicked for each book and updates DOM accordingly
+//Updates read status when the button is clicked for each book and updates DOM accordingly
 
 container.addEventListener("click", function(event) {
     if(event.target.className === "readStatusButton") {
@@ -92,16 +88,18 @@ container.addEventListener("click", function(event) {
         const index = myLibrary.findIndex(book => book.id == indexFinder);
         
         //if the readStatus is false, change it to true and vice versa
-        if(myLibrary[index].readStatus === false){
-            myLibrary[index].readStatus = true
+        if(myLibrary[index].read === false){
+            myLibrary[index].read = true
         } else {
-            myLibrary[index].readStatus = false
+            myLibrary[index].read = false
         }
     }
     //reset DOM to show changed readStatus
     container.innerHTML = ""
     displayBooks();
 })
+
+
 
 const newBookButton = document.querySelector(".newBookButton");
 
@@ -154,6 +152,7 @@ function createForm() {
         newBookForm.appendChild(label);
         newBookForm.appendChild(input);
     });
+    
 
     //submit button to function on form and send new book entries to myLibrary
     const submitButton = document.createElement("button");
@@ -161,6 +160,16 @@ function createForm() {
     submitButton.textContent = "Submit Book";
 
     newBookForm.appendChild(submitButton);
+
+    //create close button to close dialog box and form if no new book is being entered
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("closeButton");
+    closeButton.textContent = "X"
+    closeButton.addEventListener("click", () => {
+        dialogBox.close();
+    })
+
+    newBookForm.append(closeButton);
 
 
     //adds values from user input to myLibrary array and resets display to show new book entry
