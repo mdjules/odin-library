@@ -19,6 +19,12 @@ function addBookToLibrary(title, author, pages) {
     myLibrary.push(bookToAdd);
 }
 
+Book.prototype.toggleReadStatus = function() {
+    this.read = !this.read
+    container.innerHTML = "";
+    displayBooks()
+} 
+
 addBookToLibrary("test", "author", "22");
 addBookToLibrary("test2", "author2", "222")
 console.log(myLibrary)
@@ -45,9 +51,12 @@ function displayBooks() {
         list.setAttribute("class", "book-info") 
 
         for (const key in book) {
-            const item = document.createElement("li");
-            item.textContent = `${key}: ${book[key]}`;
-            list.appendChild(item);
+            if(key != "toggleReadStatus") {
+                const item = document.createElement("li");
+                item.textContent = `${key}: ${book[key]}`;
+                list.appendChild(item);
+            }
+            
         }
 
         bookDiv.append(list); 
@@ -81,25 +90,11 @@ container.addEventListener("click", function(event) {
 
 container.addEventListener("click", function(event) {
     if(event.target.className === "readStatusButton") {
-         //gets finds bookId for the book that contains readStatus button
-        const indexFinder = event.target.parentElement.dataset.bookId
-
-        //gets index of that book in object array (myLibrary)
-        const index = myLibrary.findIndex(book => book.id == indexFinder);
-        
-        //if the readStatus is false, change it to true and vice versa
-        if(myLibrary[index].read === false){
-            myLibrary[index].read = true
-        } else {
-            myLibrary[index].read = false
-        }
+        const targetElement = event.target.parentElement.dataset.bookId;
+        const targetIndexofElement = myLibrary.findIndex(book => book.id == targetElement);
+        myLibrary[targetIndexofElement].toggleReadStatus();
     }
-    //reset DOM to show changed readStatus
-    container.innerHTML = ""
-    displayBooks();
 })
-
-
 
 const newBookButton = document.querySelector(".newBookButton");
 
